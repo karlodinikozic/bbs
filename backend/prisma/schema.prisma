@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum StorageItemType {
+  FILE
+  FOLDER
+}
+
+model StorageItem {
+  id        String          @id @default(uuid(7))
+  parentId  String?
+  name      String
+  type      StorageItemType
+  path      String
+  parent    StorageItem?    @relation("StorageItemTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children  StorageItem[]   @relation("StorageItemTree")
+  createdAt DateTime        @default(now())
+
+  @@unique([parentId, name])
+  @@index([name])
+  @@index([path])
+}
