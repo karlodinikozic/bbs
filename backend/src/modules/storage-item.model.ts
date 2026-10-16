@@ -1,5 +1,9 @@
-export type StorageItemType = "FILE" | "FOLDER"
+export const StorageItemType = {
+    FILE: "FILE",
+    FOLDER: "FOLDER",
+} as const;
 
+export type StorageItemType = (typeof StorageItemType)[keyof typeof StorageItemType];
 
 export interface StorageItem {
     id: string;
@@ -12,8 +16,14 @@ export interface StorageItem {
 
 export type CreateStorageItemData = Omit<StorageItem, "id" | "createdAt">;
 
-export interface IStorageItemRepository  {
+export interface IStorageItemRepository {
     findById(id: StorageItem["id"]): Promise<StorageItem | null>;
+
+    findChildren(parentId: StorageItem["parentId"]): Promise<StorageItem[]>;
+
     existsInFolder(parentId: StorageItem["parentId"], name: StorageItem["name"]): Promise<boolean>;
+
     create(data: CreateStorageItemData): Promise<StorageItem>;
+
+    deleteWithDescendants(id: string, descendantsPath: string): Promise<void>;
 }
