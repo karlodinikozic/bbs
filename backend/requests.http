@@ -5,14 +5,22 @@ GET  http://localhost:3000/api/health
 POST http://localhost:3000/api/storage-items
 Content-Type: application/json
 
-{"name": "docs", "type": "FOLDER"}
+{"name": "Ukipo 2", "type": "FOLDER"}
 > {% client.global.set("folderId", response.body.id); %}
+
+#### CREATE FOLDER IN FOLDER
+POST http://localhost:3000/api/storage-items
+Content-Type: application/json
+
+{"name": "UUkipo 2", "type": "FOLDER","parentId": "{{folderId}}"}
+> {% client.global.set("folderId", response.body.id); %}
+
 
 ### Create file in folder
 POST http://localhost:3000/api/storage-items
 Content-Type: application/json
 
-{"name": "notes.txt", "type": "FILE", "parentId": "{{folderId}}"}
+{"name": "notes_kipo3.txt", "type": "FILE", "parentId": "{{folderId}}"}
 
 ### List root
 GET http://localhost:3000/api/storage-items
