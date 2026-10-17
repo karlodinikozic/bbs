@@ -26,4 +26,8 @@ export interface IStorageItemRepository {
     create(data: CreateStorageItemData): Promise<StorageItem>;
 
     deleteWithDescendants(id: string, descendantsPath: string): Promise<void>;
+
+    findByName(name: StorageItem["name"], pathPrefix:string | null, limit: number): Promise<StorageItem[]>;
+
+    findFilesByPrefix(prefix: string,limit: number): Promise<StorageItem[]>;
 }

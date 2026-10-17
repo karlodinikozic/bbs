@@ -1,5 +1,11 @@
 import {IStorageItemRepository, StorageItem, StorageItemType} from "./storage-item.model";
-import {CreateStorageItemDTO, DeleteStorageItemDTO, ListStorageItemsDTO} from "./storage-item.dto";
+import {
+    AutocompleteStorageItemDTO,
+    CreateStorageItemDTO,
+    DeleteStorageItemDTO,
+    ListStorageItemsDTO,
+    SearchStorageItemDTO
+} from "./storage-item.dto";
 import {Cradle} from "../container";
 
 export class StorageItemService {
@@ -23,7 +29,7 @@ export class StorageItemService {
             if (parent.type !== StorageItemType.FOLDER) {
                 throw new Error("Parent must be a folder");
             }
-            path = `${path}/${parent.id}`;
+            path = `${parent.path}/${parent.id}`;
         }
 
         if (await this.repository.existsInFolder(parentId, dto.name)) {
@@ -31,6 +37,28 @@ export class StorageItemService {
         }
 
         return await this.repository.create({name, type: dto.type, parentId, path})
+    }
+
+    private static readonly SEARCH_LIMIT = 50;
+    async search(dto: SearchStorageItemDTO): Promise<StorageItem[]> {
+        let pathPrefix: string | null = null;
+        if(dto.parentId){
+            const parent = await this.repository.findById(dto.parentId);
+            if(!parent) {
+                throw new Error("Folder not found");
+            }
+            if(parent.type !== StorageItemType.FOLDER) {
+                throw new Error("Parent must be a folder");
+            }
+
+            pathPrefix = `${parent.path}/${parent.id}`;
+        }
+        return this.repository.findByName(dto.name,pathPrefix, StorageItemService.SEARCH_LIMIT);
+    }
+
+    private static readonly AUTOCOMPLETE_LIMIT = 10;
+    autocomplete(dto: AutocompleteStorageItemDTO): Promise<StorageItem[]> {
+        return this.repository.findFilesByPrefix(dto.prefix,StorageItemService.AUTOCOMPLETE_LIMIT)
     }
 
     async listChildren(dto: ListStorageItemsDTO): Promise<StorageItem[]> {

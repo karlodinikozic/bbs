@@ -1,12 +1,24 @@
-import {CreateStorageItemData, IStorageItemRepository, StorageItem} from "./storage-item.model";
+import {CreateStorageItemData, IStorageItemRepository, StorageItem, StorageItemType} from "./storage-item.model";
 import {PrismaClient} from "../generated/prisma/client";
 import {Cradle} from "../container";
+import {startsWithRange} from "../shared/database/query.helpers";
 
 export class StorageItemRepository implements IStorageItemRepository {
     private readonly prisma: PrismaClient;
 
     constructor(cradle: Cradle) {
         this.prisma = cradle.prisma;
+    }
+
+    findByName(name: StorageItem["name"], pathPrefix: string | null, limit: number): Promise<StorageItem[]> {
+        return this.prisma.storageItem.findMany({
+            where: {
+                name,
+                path: pathPrefix ? {startsWith: pathPrefix} : undefined
+            },
+            orderBy: [{type: "desc"}, {path: "asc"}],
+            take: limit
+        })
     }
 
     findChildren(parentId: StorageItem["parentId"]): Promise<StorageItem[]> {
@@ -19,6 +31,18 @@ export class StorageItemRepository implements IStorageItemRepository {
     findById(id: StorageItem["id"]): Promise<StorageItem | null> {
         return this.prisma.storageItem.findUnique({where: {id}});
     }
+
+    findFilesByPrefix(prefix: string, limit: number): Promise<StorageItem[]> {
+        return this.prisma.storageItem.findMany({
+            where:{
+                type: StorageItemType.FILE,
+                name: startsWithRange(prefix),
+            },
+            orderBy: [{name: "asc"}],
+            take: limit
+        })
+    }
+
 
     async existsInFolder(parentId: StorageItem["parentId"], name: StorageItem["name"]): Promise<boolean> {
         const count = await this.prisma.storageItem.count({where: {parentId, name}})

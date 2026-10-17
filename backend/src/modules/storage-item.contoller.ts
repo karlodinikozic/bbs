@@ -1,5 +1,11 @@
 import {Request, Response} from "express";
-import {createStorageItemSchema, deleteStorageItemSchema, listStorageItemsSchema} from "./storage-item.dto";
+import {
+    autocompleteStorageItemSchema,
+    createStorageItemSchema,
+    deleteStorageItemSchema,
+    listStorageItemsSchema,
+    searchStorageItemSchema
+} from "./storage-item.dto";
 import {StorageItemService} from "./storage-item.service";
 import {Cradle} from "../container";
 
@@ -16,6 +22,18 @@ export class StorageItemController {
         const item = await this.service.create(dto);
 
         return res.status(201).json(item);
+    }
+
+    search = async (req: Request, res: Response) => {
+        const dto = searchStorageItemSchema.parse(req.query);
+        const items = await this.service.search(dto);
+        return res.json(items);
+    }
+
+    autocomplete = async (req: Request, res: Response) => {
+        const dto = autocompleteStorageItemSchema.parse(req.query);
+        const items = await this.service.autocomplete(dto);
+        return res.json(items);
     }
 
     list = async (req: Request, res: Response) => {

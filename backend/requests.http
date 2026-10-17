@@ -24,4 +24,13 @@ GET http://localhost:3000/api/storage-items?parentId={{folderId}}
 DELETE http://localhost:3000/api/storage-items/{{folderId}}
 
 
+### Search everywhere
+GET http://localhost:3000/api/storage-items/search?name=notes.txt
+
+### Search inside folder
+GET http://localhost:3000/api/storage-items/search?name=notes.txt&parentId={{folderId}}
+
+### Autocomplete
+GET http://localhost:3000/api/storage-items/autocomplete?prefix=no
+
 

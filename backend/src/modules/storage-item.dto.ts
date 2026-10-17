@@ -20,3 +20,16 @@ export const deleteStorageItemSchema = z.object({
 })
 
 export type DeleteStorageItemDTO = z.infer<typeof deleteStorageItemSchema>;
+
+
+export const searchStorageItemSchema = z.object({
+    name: z.string().trim().min(1),
+    parentId: z.uuid().optional()
+})
+
+export type SearchStorageItemDTO = z.infer<typeof searchStorageItemSchema>;
+
+export const autocompleteStorageItemSchema = z.object({
+    prefix: z.string().trim().min(1).max(255),
+})
+export type AutocompleteStorageItemDTO = z.infer<typeof autocompleteStorageItemSchema>;
