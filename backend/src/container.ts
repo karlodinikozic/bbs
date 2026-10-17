@@ -1,8 +1,8 @@
 import {asClass, asValue, createContainer, InjectionMode} from "awilix";
 import {prisma} from "./shared/database/prisma";
-import {StorageItemRepository} from "./modules/storage-item.repository";
-import {StorageItemController} from "./modules/storage-item.contoller";
-import {StorageItemService} from "./modules/storage-item.service";
+import {StorageItemRepository} from "./modules/storage-items/storage-item.repository";
+import {StorageItemService} from "./modules/storage-items/storage-item.service";
+import {StorageItemController} from "./modules/storage-items/storage-item.controller";
 
 export interface Cradle{
     prisma: typeof prisma

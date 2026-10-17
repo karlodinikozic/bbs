@@ -6,7 +6,8 @@ import {
     ListStorageItemsDTO,
     SearchStorageItemDTO
 } from "./storage-item.dto";
-import {Cradle} from "../container";
+import {Cradle} from "../../container";
+import {BadRequestError, ConflictError, NotFoundError} from "../../shared/errors/app-errors";
 
 export class StorageItemService {
     private readonly repository: IStorageItemRepository;
@@ -23,17 +24,17 @@ export class StorageItemService {
         if (parentId) {
             const parent = await this.repository.findById(parentId);
             if (!parent) {
-                throw new Error("Parent folder not found");
+                throw new NotFoundError("Parent folder not found");
             }
 
             if (parent.type !== StorageItemType.FOLDER) {
-                throw new Error("Parent must be a folder");
+                throw new BadRequestError("Parent must be a folder");
             }
             path = `${parent.path}/${parent.id}`;
         }
 
         if (await this.repository.existsInFolder(parentId, dto.name)) {
-            throw new Error("Name already exists in this folder");
+            throw new ConflictError("Name already exists in this folder");
         }
 
         return await this.repository.create({name, type: dto.type, parentId, path})
@@ -45,10 +46,10 @@ export class StorageItemService {
         if(dto.parentId){
             const parent = await this.repository.findById(dto.parentId);
             if(!parent) {
-                throw new Error("Folder not found");
+                throw new NotFoundError("Folder not found");
             }
             if(parent.type !== StorageItemType.FOLDER) {
-                throw new Error("Parent must be a folder");
+                throw new BadRequestError("Parent must be a folder");
             }
 
             pathPrefix = `${parent.path}/${parent.id}`;
@@ -66,10 +67,10 @@ export class StorageItemService {
         if (parentId) {
             const parent = await this.repository.findById(parentId);
             if (!parent) {
-                throw new Error("Folder not found");
+                throw new NotFoundError("Folder not found");
             }
             if (parent.type !== StorageItemType.FOLDER) {
-                throw new Error("Not a folder");
+                throw new BadRequestError("Not a folder");
             }
         }
         return this.repository.findChildren(parentId)
@@ -78,7 +79,7 @@ export class StorageItemService {
     async delete(dto: DeleteStorageItemDTO): Promise<void> {
         const item = await this.repository.findById(dto.id);
         if(!item) {
-            throw new Error("Item not found");
+            throw new NotFoundError("Item not found");
         }
         await this.repository.deleteWithDescendants(item.id, `${item.path}/${item.id}`)
     }

@@ -1,7 +1,7 @@
 import {CreateStorageItemData, IStorageItemRepository, StorageItem, StorageItemType} from "./storage-item.model";
-import {PrismaClient} from "../generated/prisma/client";
-import {Cradle} from "../container";
-import {startsWithRange} from "../shared/database/query.helpers";
+import {PrismaClient} from "../../generated/prisma/client";
+import {Cradle} from "../../container";
+import {startsWithRange} from "../../shared/database/query.helpers";
 
 export class StorageItemRepository implements IStorageItemRepository {
     private readonly prisma: PrismaClient;

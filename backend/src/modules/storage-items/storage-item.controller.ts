@@ -7,7 +7,7 @@ import {
     searchStorageItemSchema
 } from "./storage-item.dto";
 import {StorageItemService} from "./storage-item.service";
-import {Cradle} from "../container";
+import {Cradle} from "../../container";
 
 
 export class StorageItemController {

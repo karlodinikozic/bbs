@@ -1,4 +1,4 @@
-import {StorageItemController} from "./storage-item.contoller";
+import {StorageItemController} from "./storage-item.controller";
 import express from "express";
 
 export function storageItemRoutes(controller: StorageItemController) {
