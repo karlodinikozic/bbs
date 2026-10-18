@@ -53,7 +53,7 @@ function SearchStorageItem({currentFolderId, onResults, onClear}: SearchStorageI
 
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-2 w-full ">
+        <form onSubmit={handleSubmit} className="relative space-y-2 w-full ">
             <div className="flex gap-2">
                 <input type="text"
                        value={searchTerm}

@@ -34,7 +34,7 @@ function AutoCompleteStorageItem({searchTerm, onSelect, isOpen}: AutoCompleteSto
     }
 
     return (
-        <div className="inset-x-0 top-full z-10 mt-1 rounded border border-slate-200 bg-white shadow-sm">
+        <div className="aboslute inset-x-0 top-full z-10 mt-1 rounded border border-slate-200 bg-white shadow-sm">
             {itemList.map((item) => (
                 <button
                     key={item.id}
