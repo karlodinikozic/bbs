@@ -1,11 +1,11 @@
-import React from 'react';
 
 interface FolderBackButtonProps {
     onClick?: () => void;
 }
-function FolderBackButton(props: FolderBackButtonProps) {
+
+function FolderBackButton({onClick}: FolderBackButtonProps) {
     return (
-        <div></div>
+        <button onClick={onClick} className="text-sm text-blue-700 hover:underline"> BACK </button>
     );
 }
 
