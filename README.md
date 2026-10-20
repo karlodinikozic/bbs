@@ -63,6 +63,17 @@ In development, Vite forwards `/api` requests to the backend on port 3000, so no
 
 `backend/requests.http` contains ready-made requests for every endpoint. Run them with WebStorm's built-in HTTP Client or the VS Code REST Client extension.
 
+## Running tests
+
+```bash
+cd backend
+npm test             # run all tests once
+npm run test:watch   # re-run on file changes
+```
+
+- **Unit tests** (`tests/unit`) cover the service's business rules: creating items, duplicate names, parent checks, nested delete, folder-scoped search, and autocomplete. They use an in-memory fake repository, so they need no database.
+- **Integration tests** (`tests/integration`) send real HTTP requests to the Express app with Supertest, using a separate SQLite database (`data/test.db`) that is migrated automatically before the tests run. They cover a full create → browse → search → delete flow and the API's error status codes.
+
 ## API
 
 All endpoints are under `/api/storage-items`.
