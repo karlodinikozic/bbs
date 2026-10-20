@@ -154,6 +154,7 @@ The service depends on a repository **interface**, not on Prisma. Awilix wires t
 - **Autocomplete returns files only and searches all files,** as described in the task.
 - **Name matching is case-sensitive.**
 - **Duplicate names are not allowed within the same folder,** like a real file system. The same name in different folders is fine.
+- **"Debug mode" means running locally in development mode with a debugger attachable** (`npm run debug` for the backend, Vite with source maps for the frontend). Docker Compose is provided separately as the quickest way to run the whole app.
 
 ## Known limitations and future improvements
 
