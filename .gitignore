@@ -147,6 +147,5 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
-/backend/data/dev.db
-/backend/data/dev.db-journal
+/backend/data/
 /.idea/dataSources.xml
